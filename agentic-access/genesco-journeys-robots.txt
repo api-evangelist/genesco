@@ -1,0 +1,23 @@
+User-agent: *
+Disallow: /search
+#START MA BLOCK
+Disallow: /kidz/search
+Disallow: /account/employee_register
+
+# AI search and user-requested agents
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Agent
+
+Disallow: /kidz/search
+Disallow: /account/employee_register
+Allow: /search
+
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+#END MA BLOCK
+Sitemap: https://www.journeys.com/sitemap_xml
+Sitemap: https://www.journeys.com/sitemap_images

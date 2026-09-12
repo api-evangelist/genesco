@@ -1,0 +1,207 @@
+generated: '2026-09-12'
+method: probed
+source: >-
+  Direct unauthenticated GET of the named /.well-known/ path list against every host
+  Genesco is known to operate — the corporate domain plus each retail banner host.
+note: >-
+  NO WELL-KNOWN DOCUMENT WAS FOUND. Every path was probed and every one missed. Two
+  failure modes are recorded here so a later run does not re-read them as hits:
+  (1) www.genesco.com answers 403 "Access Denied" from its edge for EVERY path
+  including / and /robots.txt, so nothing on the corporate host could be read at all;
+  (2) www.johnstonmurphy.com (Salesforce Commerce Cloud) answers HTTP 200 with the
+  storefront HTML shell for EVERY /.well-known/* path — a soft-200 catch-all, NOT a
+  served document. No WellKnown, SecurityTxt or APICatalog pointer is emitted from
+  this probe, because the provider serves none of these documents.
+hosts:
+  - host: www.genesco.com
+    note: edge returns 403 Access Denied to our crawler on every path, including / and /robots.txt
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 403
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 403
+        file: null
+      - path: /.well-known/api-catalog
+        status: 403
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 403
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 403
+        file: null
+      - path: /.well-known/agent.json
+        status: 403
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 403
+        file: null
+  - host: www.journeys.com
+    note: >-
+      404 on every well-known path; the /.well-known/ 404s return the storefront HTML
+      shell. This host DOES serve a real /llms.txt (text/plain, 10,834 bytes) — saved
+      verbatim to llms/genesco-llms.txt and pointed at with type LLMsTxt.
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 404
+        file: null
+  - host: www.johnstonmurphy.com
+    note: >-
+      SOFT-200 CATCH-ALL. Salesforce Commerce Cloud returns HTTP 200 with
+      text/html;charset=UTF-8 and the full storefront shell for every /.well-known/*
+      path probed. None of these is a document. Recorded as a miss, not a hit.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        file: null
+        note: HTML storefront shell, not RFC 9116 text — miss
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: null
+        note: HTML storefront shell, not JSON — miss
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        file: null
+        note: HTML storefront shell, not JSON — miss
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        file: null
+        note: HTML storefront shell, not JSON — miss
+      - path: /.well-known/api-catalog
+        status: 200
+        file: null
+        note: HTML storefront shell, not an RFC 9727 linkset — miss
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        file: null
+        note: HTML storefront shell, not JSON — miss
+      - path: /.well-known/agent-card.json
+        status: 200
+        file: null
+        note: HTML storefront shell, not an A2A AgentCard — miss
+      - path: /.well-known/agent.json
+        status: 200
+        file: null
+        note: HTML storefront shell, not an A2A AgentCard — miss
+      - path: /.well-known/aauth-resource.json
+        status: 200
+        file: null
+        note: HTML storefront shell, no issuer/jwks_uri — miss
+  - host: www.schuh.co.uk
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 404
+        file: null
+  - host: www.littleburgundyshoes.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 404
+        file: null
+other_paths_probed:
+  - path: /llms.txt
+    results:
+      - host: www.genesco.com
+        status: 403
+      - host: www.journeys.com
+        status: 200
+        content_type: text/plain; charset=utf-8
+        file: llms/genesco-llms.txt
+      - host: www.johnstonmurphy.com
+        status: 200
+        note: HTML storefront shell — soft-200, not an llms.txt
+      - host: www.schuh.co.uk
+        status: 404
+      - host: www.littleburgundyshoes.com
+        status: 404
+  - path: /agents.md
+    results:
+      - host: www.genesco.com
+        status: 403
+      - host: www.journeys.com
+        status: 404
+      - host: www.johnstonmurphy.com
+        status: 200
+        note: HTML storefront shell — soft-200, not an agents.md
+      - host: www.schuh.co.uk
+        status: 403
+      - host: www.littleburgundyshoes.com
+        status: 403

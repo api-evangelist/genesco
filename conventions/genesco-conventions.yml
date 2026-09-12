@@ -1,0 +1,116 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  https://www.journeys.com/llms.txt and https://www.journeys.com/llms-full.txt
+  (provider-published), plus live probes of www.journeys.com, fetched 2026-09-12.
+applies_to: >-
+  The ONLY machine-addressable surface Genesco publishes: the Journeys verified-bot search
+  URL and the server-rendered JSON-LD on Journeys product detail pages. There is no API, so
+  the usual API conventions (versioning, pagination envelopes, error envelopes, idempotency
+  keys) have no subject here. Each is recorded below as the provider actually leaves it,
+  rather than invented.
+
+auth_style:
+  scheme: none
+  detail: >-
+    "No API key, bearer token, custom request header, or separate API hostname is required
+    for eligible bots." Access is decided at the edge by verified-bot identification, which
+    the caller cannot obtain by presenting a credential.
+  source: https://www.journeys.com/llms.txt
+
+transport:
+  protocol: HTTPS
+  methods: [GET, HEAD]
+  content_type_returned: text/html (condensed semantic HTML for eligible bots; full storefront otherwise)
+  javascript_required: >-
+    No for /search when the caller is an eligible verified bot, and no for /product and
+    /kidz/product pages, which are server-side rendered. Yes for product listing pages and
+    all /help articles, which are client-side rendered.
+
+identification_and_attribution:
+  user_agent: >-
+    "Automated clients must identify themselves accurately" — the robots.txt named-agent
+    group is the allow list (OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User,
+    PerplexityBot, Perplexity-User, Google-Agent).
+  query_parameter: llm
+  rule: >-
+    Append llm={bot-name} to every Journeys URL an assistant links to — "?llm=" when the URL
+    has no query string, "&llm=" when it does. Lowercase enumerated values; use "other" when
+    the assistant cannot confidently identify its platform.
+  values: [chatgpt, claude, perplexity, gemini, microsoftcopilot, meta, deepseek, other]
+
+pagination:
+  style: none-documented
+  detail: >-
+    The search response is described as returning a reported result count and a displayed
+    product count, but no page/offset/cursor parameter is documented. Treat the response as
+    a single page of discovery data.
+
+versioning:
+  style: none
+  detail: No version segment, header, or date-based version — the surface is a website path.
+
+error_semantics:
+  style: http-status-only
+  detail: >-
+    No error envelope, no RFC 9457 problem+json, no error code registry. Failures surface as
+    ordinary HTTP statuses and, for unverified automated clients, as a Cloudflare bot-management
+    interstitial. Observed 2026-09-12: GET /search?keywords=black%20converse&llm=claude returned
+    403 with a Cloudflare "Attention Required!" HTML body under both a browser User-Agent and a
+    Claude-User User-Agent.
+
+rate_limit_signaling:
+  headers: none-observed
+  detail: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After headers are documented or were observed. The
+    provider states only "respect applicable crawl limits and site policies" with no published
+    numbers. See rate-limits/genesco-rate-limits.yml.
+
+caching:
+  detail: >-
+    "Search results may be cached and should be treated as discovery data. Product Detail Pages
+    remain the authoritative source for product-specific facts."
+
+data_freshness:
+  rule: >-
+    Do not guess live availability, prices, promotions, coupon eligibility, shipping dates, size
+    availability, or store inventory; confirm from the Product Detail Page JSON-LD or send the
+    user to the page.
+
+idempotency:
+  coverage: na
+  mechanism: none
+  scope: []
+  detail: >-
+    NOT APPLICABLE — read-only surface. Only GET and HEAD are supported and no mutating
+    operation is published, so there is nothing to replay-protect. This is an honest `na`, not a
+    missing mechanism: a read-only provider cannot double-fire a write.
+
+dry_run_mode:
+  status: na
+  detail: No write surface, therefore nothing to rehearse.
+
+reversibility:
+  status: na
+  detail: >-
+    NOT APPLICABLE — Genesco publishes no machine-callable write operation of any kind. There is
+    no create, update, delete, order, cart, or payment action an agent can take through a
+    documented surface, so there is no action to reverse and no reversal window to state. If
+    Genesco ever publishes an agentic checkout or order surface, this block becomes a real
+    requirement and must record the cancel/return operation and its window from the provider's
+    own returns policy.
+  write_surfaces: []
+  related_consumer_policy:
+    note: >-
+      For completeness and NOT as an agent-reversibility claim: the Journeys storefront's own
+      Organization JSON-LD carries a hasMerchantReturnPolicy node, and the human returns policy
+      lives at https://www.journeys.com/customer-service/returns-and-exchanges. That is a
+      consumer return path a person exercises in a browser — not a reversal operation exposed to
+      an agent — so it does not upgrade this block above `na`.
+
+cross_links:
+  agentic_access: agentic-access/genesco-agentic-access.yml
+  conformance: conformance/genesco-conformance.yml
+  rate_limits: rate-limits/genesco-rate-limits.yml
+  well_known: well-known/genesco-well-known.yml
+  llms_txt: llms/genesco-llms.txt

@@ -1,0 +1,140 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  https://www.journeys.com/llms.txt, https://www.journeys.com/llms-full.txt,
+  https://www.journeys.com/robots.txt, https://www.johnstonmurphy.com/robots.txt, and a
+  live fetch of a Journeys product detail page. Probed 2026-09-12.
+note: >-
+  Genesco publishes no API contract, so none of the API-shaped standards below can be
+  asserted. What it does conform to is the machine-readable-web layer: robots.txt,
+  Content-Signals, llms.txt and schema.org JSON-LD. Every `conforms: true` entry below is
+  backed by a URL we fetched ourselves.
+
+conformance:
+  - id: robots-txt
+    name: Robots Exclusion Protocol (RFC 9309)
+    conforms: true
+    evidence:
+      - https://www.journeys.com/robots.txt
+      - https://www.johnstonmurphy.com/robots.txt
+      - https://www.schuh.co.uk/robots.txt
+      - https://www.littleburgundyshoes.com/robots.txt
+    note: >-
+      Served on all four retail banner hosts. Not served readably on www.genesco.com, which
+      returns 403 to our crawler on /robots.txt.
+
+  - id: content-signals
+    name: Content-Signals AI usage preferences (contentsignals.org)
+    conforms: true
+    evidence:
+      - https://www.journeys.com/robots.txt
+      - https://www.johnstonmurphy.com/robots.txt
+    declaration: 'search=yes, ai-input=yes, ai-train=no'
+    note: >-
+      A machine-readable AI-usage preference expressed in robots.txt on two banner hosts.
+      Absent on schuh and Little Burgundy.
+
+  - id: llms-txt
+    name: llms.txt (AI assistant guidance file)
+    conforms: true
+    evidence:
+      - https://www.journeys.com/llms.txt
+      - https://www.journeys.com/llms-full.txt
+    note: >-
+      Journeys only. Both the compact and full files are served as text/plain and are
+      substantive — link attribution rules, a documented bot-accessible search URL, a
+      product-availability workflow, and an explicit public-information boundary.
+
+  - id: schema-org-jsonld
+    name: schema.org structured data in application/ld+json
+    conforms: true
+    evidence:
+      - https://www.journeys.com/product/converse-chuck-taylor-all-star-lo-sneaker-black-398562
+    types_observed: [ProductGroup, BreadcrumbList, Organization, WebSite]
+    note: >-
+      Verified on a live product detail page 2026-09-12 — four JSON-LD blocks, server-side
+      rendered, no JavaScript execution required. ProductGroup carries productGroupID, mpn,
+      variesBy/hasVariant, brand, aggregateRating and review; Organization carries
+      hasMemberProgram and hasMerchantReturnPolicy; WebSite carries a SearchAction.
+      This is the closest thing Genesco publishes to a machine-readable data contract.
+
+  - id: sitemaps-xml
+    name: Sitemaps XML protocol
+    conforms: true
+    evidence:
+      - https://www.journeys.com/sitemap_xml
+      - https://www.johnstonmurphy.com/sitemap_index.xml
+      - https://www.schuh.co.uk/googleSitemapIndex.aspx
+      - https://www.littleburgundyshoes.com/sitemap_xml
+
+  - id: openapi
+    name: OpenAPI
+    conforms: false
+    evidence:
+      - https://www.journeys.com/openapi.json
+    note: >-
+      404 (HTML shell). No OpenAPI on any Genesco host. The provider states it directly:
+      "Journeys does not currently publish a general public API catalog, developer portal,
+      or OpenAPI document for third-party use."
+
+  - id: oauth2
+    name: OAuth 2.0 / OpenID Connect discovery
+    conforms: false
+    evidence:
+      - https://www.journeys.com/.well-known/openid-configuration
+      - https://www.journeys.com/.well-known/oauth-authorization-server
+    note: 404 on both; no authorization server metadata on any Genesco host.
+
+  - id: rfc9727-api-catalog
+    name: RFC 9727 /.well-known/api-catalog
+    conforms: false
+    evidence:
+      - https://www.journeys.com/.well-known/api-catalog
+    note: >-
+      404. Johnston & Murphy answers 200 for this path but returns the storefront HTML
+      shell, which is a soft-200 and not a linkset.
+
+  - id: rfc9116-security-txt
+    name: RFC 9116 security.txt
+    conforms: false
+    evidence:
+      - https://www.journeys.com/.well-known/security.txt
+    note: 404 across all readable hosts; no published vulnerability-disclosure contact.
+
+  - id: a2a-agent-card
+    name: A2A Agent Card
+    conforms: false
+    evidence:
+      - https://www.journeys.com/.well-known/agent-card.json
+      - https://www.journeys.com/.well-known/agent.json
+    note: 404 on both paths on every readable host.
+
+domain_standards:
+  note: >-
+    Retail's machine-readable domain standards are the product/commerce vocabularies and
+    the B2B trading formats. Genesco meets the first and is reported to trade in the second,
+    but only the first is verifiable from a Genesco-published artifact.
+  entries:
+    - id: schema-org-product
+      name: schema.org Product / ProductGroup / Offer commerce vocabulary
+      conforms: true
+      evidence:
+        - https://www.journeys.com/product/converse-chuck-taylor-all-star-lo-sneaker-black-398562
+      note: >-
+        Genesco's storefront declares the retail domain vocabulary in its own markup — an
+        agent that already speaks schema.org commerce reads Journeys product data with no
+        bespoke connector. Verified by fetching the page and parsing the ld+json.
+    - id: x12-edi
+      name: ANSI ASC X12 EDI trading-partner surface
+      conforms: false
+      evidence:
+        - https://www.b2bgateway.net/trading-partner/genesco/
+        - https://datatrans-inc.com/edi-genesco/
+        - https://www.infoconn.com/edi/partners/Genesco.htm
+      note: >-
+        NOT ASSERTED AS CONFORMANCE. Multiple third-party EDI integrators publish Genesco
+        trading-partner onboarding, so Genesco almost certainly exchanges X12 documents with
+        its vendors over VAN/AS2/SFTP. We found no Genesco-published EDI implementation
+        guide, spec, or endpoint — the evidence is entirely third-party marketing, and this
+        pipeline records a domain standard only when the contract itself declares it.
+        Recorded here as a lead, deliberately scored as non-conforming.

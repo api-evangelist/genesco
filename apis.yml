@@ -4,7 +4,13 @@ description: >-
   Genesco is a specialty retailer and branded company selling footwear,
   apparel, and accessories through more than 1,400 retail stores and
   e-commerce sites under banners including Journeys, Schuh, Johnston & Murphy,
-  and Genesco Brands.
+  and Genesco Brands. Genesco publishes no public API, developer portal, or
+  OpenAPI document — it says so itself in the llms.txt it serves on
+  journeys.com. What it does publish is an agent-access posture: an llms.txt
+  for AI assistants, a Content-Signal AI-usage declaration in robots.txt on
+  Journeys and Johnston & Murphy, a named allow list for AI search and
+  user-requested agents, an llm= referral attribution convention, and
+  server-rendered schema.org ProductGroup JSON-LD on every product page.
 type: Index
 deliveryModel:
   model: unknown
@@ -31,12 +37,14 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/genesco.png
 access: 3rd-Party
 created: '2026-03-24'
-modified: '2026-04-28'
+modified: '2026-09-12'
 position: Consuming
 tags:
   - Retail
   - Footwear
   - Apparel
+  - E-Commerce
+  - Agentic Access
   - Fortune 1000
 url: >-
   https://raw.githubusercontent.com/api-evangelist/genesco/refs/heads/main/apis.yml
@@ -49,6 +57,26 @@ common:
     url: https://www.linkedin.com/company/genesco
   - type: Website
     url: https://www.genesco.com
+  - type: LLMsTxt
+    url: llms/genesco-llms.txt
+  - type: AgenticAccess
+    url: agentic-access/genesco-agentic-access.yml
+  - type: ContentSignal
+    url: agentic-access/genesco-agentic-access.yml
+  - type: Conformance
+    url: conformance/genesco-conformance.yml
+  - type: Conventions
+    url: conventions/genesco-conventions.yml
+  - type: Plans
+    url: plans/genesco-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/genesco-rate-limits.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+
+x-enrichment:
+  date: '2026-09-12'
+  status: enriched
+  artifacts_added: 9
+  pass: local-v3

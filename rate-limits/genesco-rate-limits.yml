@@ -1,0 +1,36 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  https://www.journeys.com/llms.txt, https://www.journeys.com/llms-full.txt, and a live probe
+  of https://www.journeys.com/search?keywords=black%20converse&llm=claude. Checked 2026-09-12.
+limit_count: 0
+rate_limits: []
+response_headers:
+  observed: []
+  note: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After headers are documented, and none were observed
+    on the responses we received.
+exhaustion_status: null
+note: >-
+  Genesco publishes NO numeric rate limits. The only statement on the subject is qualitative:
+  automated clients "must identify themselves accurately, follow
+  https://www.journeys.com/robots.txt, and respect applicable crawl limits and site policies" —
+  with no window, quota, burst or per-key figure given anywhere. There is no API and no API key,
+  so there is no per-key scope to limit. Enforcement in practice is Cloudflare bot management at
+  the edge rather than a published budget: our probe of the documented verified-bot search URL
+  returned HTTP 403 with a Cloudflare "Attention Required!" body under both an ordinary browser
+  User-Agent and a Claude-User User-Agent, which is bot verification failing, not a quota being
+  exhausted. An agent has no published signal telling it how fast it may go.
+probes:
+  - url: https://www.journeys.com/search?keywords=black%20converse&llm=claude
+    user_agent: browser
+    status: 403
+    body: Cloudflare bot-management interstitial
+  - url: https://www.journeys.com/search?keywords=black%20converse&llm=claude
+    user_agent: Claude-User
+    status: 403
+    body: Cloudflare bot-management interstitial
+  - url: https://www.journeys.com/product/converse-chuck-taylor-all-star-lo-sneaker-black-398562
+    user_agent: browser
+    status: 200
+    body: server-rendered product page with 4 application/ld+json blocks

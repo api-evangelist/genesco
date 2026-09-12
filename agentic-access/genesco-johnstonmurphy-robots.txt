@@ -1,0 +1,85 @@
+# Go away - this example shows how to exclude all robots from the entire site
+User-agent: *
+Disallow: /*demandware.store*
+Disallow: /default/Cart-MiniAddProduct
+Disallow: /default/COBilling-ResetPaymentForms
+Disallow: /default/COSummary-Start
+Disallow: /default/GiftCert-ShowMiniCart
+Disallow: /default/Product-Detail
+Disallow: /default/Product-GetAvailability
+Disallow: /default/Product-GetSetItem
+Disallow: /default/Product-Productnav
+Disallow: /default/Product-Show
+Disallow: /default/Resources-Load
+Disallow: /en_US/Cart-MiniAddProduct
+Disallow: /en_US/COBilling-ResetPaymentForms
+Disallow: /en_US/COSummary-Start
+Disallow: /en_US/GiftCert-ShowMiniCart
+Disallow: /en_US/Product-Detail
+Disallow: /en_US/Product-GetAvailability
+Disallow: /en_US/Product-GetSetItem
+Disallow: /en_US/Product-Productnav
+Disallow: /en_US/Product-Show
+Disallow: /en_US/Product-Variation
+Disallow: /*prefv1
+Disallow: /*prefv2
+Disallow: /*prefn1
+Disallow: /*prefn2
+Disallow: /*.page
+Disallow: /SendToFriend-Product
+Disallow: /?q=
+Disallow: /search
+Disallow: /start=
+Disallow: /*pmax=
+Disallow: /*pmin=
+Disallow: /*?cta=
+Disallow: /*?bvstate=pg
+Disallow: /*.set-item$
+Disallow: /*/johnstonmurphy.com$
+Disallow: /*POST$
+Disallow: */null$
+Disallow: /dvc
+Allow: /on/demandware.static/Sites-johnston-murphy-us-Site/-/default/*/images/favicons/
+Allow: /on/demandware.static/Sites-johnston-murphy-us-Site/*/js/
+Allow: /on/demandware.static/Sites-johnston-murphy-us-Site/*/css/
+Allow: /on/demandware.static/Sites-johnston-murphy-us-Library/*/images/
+Sitemap: https://www.johnstonmurphy.com/sitemap_index.xml
+
+
+User-agent: dotbot
+Disallow: /
+
+
+
+# AI search / agent ready
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Agent
+
+Disallow: /*prefv1
+Disallow: /*prefv2
+Disallow: /*prefn1
+Disallow: /*prefn2
+Disallow: /*.page
+Disallow: /SendToFriend-Product
+Disallow: /?q=
+Disallow: /search
+Disallow: /start=
+Disallow: /*pmax=
+Disallow: /*pmin=
+Disallow: /*?cta=
+Disallow: /*?bvstate=pg
+Disallow: /*.set-item$
+Disallow: /*/johnstonmurphy.com$
+Disallow: /*POST$
+Disallow: */null$
+Disallow: /dvc
+Disallow: /*demandware.store*
+Allow: /search
+
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+# AI search / agent ready

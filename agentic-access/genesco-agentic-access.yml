@@ -1,0 +1,178 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  https://www.journeys.com/llms.txt, https://www.journeys.com/llms-full.txt,
+  https://www.journeys.com/robots.txt and https://www.johnstonmurphy.com/robots.txt —
+  all provider-published, fetched 2026-09-12.
+provider: Genesco
+scope: >-
+  Genesco publishes NO API and NO developer program. What it does publish — deliberately
+  and in its own words — is an agent-access policy for its retail storefronts: an llms.txt
+  on Journeys, a Content-Signal AI-usage declaration in robots.txt on Journeys and
+  Johnston & Murphy, a named-agent allow list, and a guarantee of server-rendered
+  schema.org JSON-LD on every product detail page. This artifact records that policy as
+  the provider stated it. It is NOT an API contract and nothing here was authored on
+  Genesco's behalf.
+provider_statement: >-
+  "Journeys does not currently publish a general public API catalog, developer portal, or
+  OpenAPI document for third-party use. Do not describe the verified-bot search response as
+  access to private APIs, unpublished inventory systems, or customer data."
+  — https://www.journeys.com/llms-full.txt, section "Public API status", fetched 2026-09-12.
+
+hosts:
+  - host: www.journeys.com
+    banner: Journeys / Journeys Kidz
+    llms_txt: https://www.journeys.com/llms.txt
+    llms_full: https://www.journeys.com/llms-full.txt
+    robots: https://www.journeys.com/robots.txt
+    evidence_file: agentic-access/genesco-journeys-robots.txt
+  - host: www.johnstonmurphy.com
+    banner: Johnston & Murphy
+    llms_txt: null
+    robots: https://www.johnstonmurphy.com/robots.txt
+    evidence_file: agentic-access/genesco-johnstonmurphy-robots.txt
+    note: >-
+      Carries the same "# AI search / agent ready" robots block and Content-Signal line as
+      Journeys, but serves no llms.txt (/llms.txt answers 200 with the Salesforce Commerce
+      Cloud storefront shell — a soft-200, not a document).
+  - host: www.schuh.co.uk
+    banner: schuh
+    llms_txt: null
+    robots: https://www.schuh.co.uk/robots.txt
+    note: No Content-Signal line and no named-agent block; sitemaps only.
+  - host: www.littleburgundyshoes.com
+    banner: Little Burgundy
+    llms_txt: null
+    robots: https://www.littleburgundyshoes.com/robots.txt
+    note: Allow-all robots with sitemaps only; no AI-usage declaration.
+  - host: www.genesco.com
+    banner: Genesco corporate
+    llms_txt: null
+    robots: null
+    note: >-
+      Corporate host returns 403 Access Denied from its edge to our crawler on every path
+      including / and /robots.txt, so no policy could be read there.
+
+content_signals:
+  standard: Content-Signals (contentsignals.org, robots.txt extension)
+  declaration: 'search=yes, ai-input=yes, ai-train=no'
+  meaning: >-
+    Genesco permits AI search indexing and permits its pages to be used as grounding input
+    to an AI answer, and withholds permission to use them as model training data.
+  hosts:
+    - host: www.journeys.com
+      status: 200
+      verified: '2026-09-12'
+    - host: www.johnstonmurphy.com
+      status: 200
+      verified: '2026-09-12'
+
+named_agents_allowed:
+  note: >-
+    Both hosts carry a dedicated robots group naming user-requested and AI-search agents
+    and, uniquely, re-Allow /search for them after Disallow-ing it for everyone else.
+  agents:
+    - OAI-SearchBot
+    - ChatGPT-User
+    - Claude-SearchBot
+    - Claude-User
+    - PerplexityBot
+    - Perplexity-User
+    - Google-Agent
+
+surfaces:
+  - id: journeys-bot-search
+    name: Journeys verified-bot product search
+    kind: html-discovery-endpoint
+    not_an_api: true
+    method: GET
+    also_supported: [HEAD]
+    url_template: https://www.journeys.com/search?keywords={url-encoded-query}&llm={bot-name}
+    auth: none
+    auth_note: >-
+      Provider states verbatim: "No API key, bearer token, custom request header, or separate
+      API hostname is required for eligible bots." Eligibility is decided at the edge by
+      verified-bot identification, not by a credential the caller can obtain.
+    action_class: read
+    consequence: none
+    write_effects: none
+    human_escalation: not-required
+    response: >-
+      Condensed, server-rendered semantic HTML for eligible verified bots — query echo,
+      reported result count, displayed product count, render timestamp, and an ordered
+      product list (name, PDP URL, brand, style ID, current price, list price, primary image).
+      JavaScript execution is not required for this response.
+    fallback: >-
+      A request not recognized as an eligible verified bot receives the ordinary
+      customer-facing search experience, which requires JavaScript to populate results.
+    probe:
+      url: https://www.journeys.com/search?keywords=black%20converse&llm=claude
+      fetched: '2026-09-12'
+      http_status: 403
+      observed: >-
+        Cloudflare bot management ("Attention Required! | Cloudflare") returned 403 to our
+        probe under BOTH an ordinary browser User-Agent and a Claude-User User-Agent. A
+        User-Agent string is not verified-bot identity, so this 403 is the expected outcome
+        for an unverified client and is NOT evidence the surface is broken. It does mean the
+        condensed bot response could not be observed first-hand; the description above is the
+        provider's, not ours.
+  - id: journeys-pdp-jsonld
+    name: Journeys product detail page structured data
+    kind: structured-data
+    not_an_api: true
+    method: GET
+    url_pattern: https://www.journeys.com/product/{slug}  (and /kidz/product/{slug})
+    auth: none
+    action_class: read
+    consequence: none
+    provider_claim: >-
+      "ALL product detail pages are server-side rendered and are guaranteed to return
+      structured data in application/ld+json script tags."
+    probe:
+      url: https://www.journeys.com/product/converse-chuck-taylor-all-star-lo-sneaker-black-398562
+      fetched: '2026-09-12'
+      http_status: 200
+      verified: true
+      observed: >-
+        4 application/ld+json blocks served server-side with no JavaScript execution:
+        ProductGroup (with productGroupID, mpn, color, variesBy, hasVariant, brand,
+        aggregateRating, review), BreadcrumbList, Organization (with hasMemberProgram
+        "Journeys All Access" and its three tiers, plus hasMerchantReturnPolicy), and
+        WebSite (with a SearchAction potentialAction targeting
+        https://www.journeys.com/search?q={search_term_string}).
+      note: The provider's guarantee held on the page we checked.
+
+write_surface: none
+write_surface_note: >-
+  No Genesco host exposes a machine-callable write operation. Cart, checkout, account and
+  loyalty actions are browser flows, not documented agent surfaces, and the provider's own
+  boundary statement puts inventory systems, customer data and internal tools out of scope.
+
+boundaries:
+  - >-
+    "This file provides public website guidance only. It does not provide access to private
+    APIs, unpublished inventory systems, customer data, internal tools, employee-only
+    systems, or non-public business rules."
+  - >-
+    Search results may be cached and should be treated as discovery data; Product Detail
+    Pages are the authoritative source for product-specific facts.
+  - >-
+    "Automated clients must identify themselves accurately, follow
+    https://www.journeys.com/robots.txt, and respect applicable crawl limits and site policies."
+
+attribution_requirement:
+  parameter: llm
+  required: true
+  description: >-
+    Genesco asks every AI assistant linking to Journeys.com to append llm={bot-name} so
+    AI-assisted referrals can be attributed. Values are lowercase and enumerated.
+  values: [chatgpt, claude, perplexity, gemini, microsoftcopilot, meta, deepseek, other]
+  fallback: other
+  source: https://www.journeys.com/llms.txt
+
+gaps:
+  - No OpenAPI, AsyncAPI, GraphQL, gRPC or WSDL contract on any Genesco host.
+  - No /.well-known/ document of any kind on any Genesco host (see well-known/genesco-well-known.yml).
+  - No A2A agent card, no MCP server, no agents.md.
+  - No llms.txt on schuh, Little Burgundy or the corporate site; no Content-Signal on schuh or Little Burgundy.
+  - The corporate host www.genesco.com blocks unauthenticated crawlers outright (403), so it publishes no readable agent policy.

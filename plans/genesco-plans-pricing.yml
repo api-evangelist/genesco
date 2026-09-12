@@ -1,0 +1,18 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  https://www.journeys.com/llms-full.txt (section "Public API status") and a search of
+  genesco.com, journeys.com, johnstonmurphy.com, schuh.co.uk and littleburgundyshoes.com for
+  a developer portal or API pricing page. Checked 2026-09-12.
+plan_count: 0
+plans: []
+note: >-
+  Genesco publishes NO API plans, tiers, or developer pricing of any kind — there is no
+  developer program to price. The provider says so itself: "Journeys does not currently
+  publish a general public API catalog, developer portal, or OpenAPI document for third-party
+  use." The one machine-addressable surface it does publish (the Journeys verified-bot search
+  URL) is free, unmetered and uncredentialed for eligible verified bots, and is explicitly not
+  offered as a commercial API product. Genesco's commercial surface is retail merchandise and a
+  consumer loyalty program (Journeys All Access, tiers General Admission / Front Row / Ultimate
+  Access), neither of which is an API plan. A plan_count of 0 here is an honest measured zero,
+  not an unchecked field.
