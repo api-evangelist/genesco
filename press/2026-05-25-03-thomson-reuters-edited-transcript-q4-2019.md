@@ -1,7 +1,9 @@
 ---
 title: THOMSON REUTERS - EDITED TRANSCRIPT - Q4 2019 ...
 url: https://www.genesco.com/static-files/15de29ce-baad-457f-8d34-000574ea17fe
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Genesco" press release artificial intelligence'
 position: 3
 source: serpapi-google

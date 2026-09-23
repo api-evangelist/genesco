@@ -1,7 +1,9 @@
 ---
 title: THE BUSINESS OF GENESCO Genesco Inc. is a ...
 url: https://www.genesco.com/static-files/0d4e883c-7f40-408e-b163-9b5ac06ce192
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Genesco" press release artificial intelligence'
 position: 2
 source: serpapi-google
